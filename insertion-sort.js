@@ -1,6 +1,6 @@
 // Insertion Sort out-of-place
 // Do not modify the original array
-function insertionSort(arr) {
+function insertionSort(arr, sorted = []) {
   /*
   Pseudocode:
 
@@ -19,6 +19,40 @@ function insertionSort(arr) {
   */
 
   // Your code here
+  const arrLen = arr.length
+  const sortedLen = sorted.length
+
+  let el = arr[arrLen - 1];
+
+  console.log(sorted.join(','));
+
+  if (arr.length === 0) {
+    return sorted;
+  }
+
+  if (sortedLen === 0) {
+    sorted.push(el);
+  }
+
+  for (let i = sortedLen - 1; i >= 0; i--) {
+    let sortedEl1 = sorted[i];
+    let sortedEl2 = sorted[i - 1];
+
+    if (el < sortedEl1 && !sortedEl2) {
+      sorted[i + 1] = sortedEl1;
+      sorted[i] = el;
+    } else if (el > sortedEl1 && i === sortedLen - 1) {
+      sorted.push(el);
+    } else if (el < sortedEl1 && el < sortedEl2) {
+      sorted[i + 1] = sortedEl1;
+    } else if (el < sortedEl1 && el > sortedEl2) {
+      sorted[i + 1] = sortedEl1;
+      sorted[i] = el;
+    }
+  }
+
+
+  return insertionSort(arr.slice(0, arrLen - 1), sorted);
 }
 
 // In-place Insertion Sort
@@ -41,6 +75,30 @@ function insertionSortInPlace(arr) {
   */
 
   // Your code here
+  let divider = 0;
+
+  loop1:
+  for (let i = 0; i < arr.length; i++) {
+    let el = arr[i];
+
+    loop2:
+    for (let j = divider; j >= 0; j--) {
+      let sortedEl = arr[j - 1];
+
+      if (!sortedEl || sortedEl < el) {
+        arr[j] = el;
+        divider++;
+
+        console.log(arr.join(','));
+
+        continue loop1;
+      } else if (sortedEl > el) {
+        arr[j] = sortedEl;
+      }
+    }
+  }
+
+  return arr;
 }
 
 module.exports = [insertionSort, insertionSortInPlace];
